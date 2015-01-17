@@ -207,6 +207,8 @@ class Staff extends CI_Controller {
 			$end=$post_event["todo_event_time_end"];
 			switch($_POST["todo_repeating"]){
 				case "day":
+				// THIS CASE FOR REPEATIN TODOD EVENT FOR EVERY DAY
+				// FIRST STEP IN 30 DAYS
 					for($i = 0; $i < 30; $i++){
 						$start+=24*60*60;
 						$end+=24*60*60;
@@ -218,7 +220,9 @@ class Staff extends CI_Controller {
 					}
 					break;
 				case "week":
-					for($i = 0; $i < 4; $i++){
+				// THIS CASE FOR REPEATIN TODOD EVENT FOR EVERY WEEK
+				// FIRST STEP IN 8 WEEKS (2 MOTHES)
+					for($i = 0; $i < 8; $i++){
 						$start+=7*24*60*60;
 						$end+=7*24*60*60;
 						$post_rep["todo_event_time_start"]=$start;
@@ -228,12 +232,14 @@ class Staff extends CI_Controller {
 						$this->calendar_db->add_new_event_rep($post_rep);
 					}
 					break;
+					//// NEED ADDING PLAN FOR ONE MONTH AND YEAR
 				default:
 					break;
 			}
 		}
 		return TRUE;
 	}
+	// DELETING TODO EVENT
 	public function del_even($id_event){
 		$this->load->model("calendar_db");
 		$post["todo_status"]=1; // "1" - removed
