@@ -150,7 +150,7 @@ class Staff extends CI_Controller {
 		$this->data["content"]="include/todo_edit";
 		$this->load->view("main", $this->data);
 	}
-	
+	// THIS FUNCTION CALLED BY AJAX
 	// ADDING NEW TODO EVENT
 	public function add_new_event(){
 		/// THIS DATA IS REQUARED
@@ -239,12 +239,17 @@ class Staff extends CI_Controller {
 		}
 		return TRUE;
 	}
+	// THIS FUNCTION CALLED BY AJAX
 	// DELETING TODO EVENT
 	public function del_even($id_event){
 		$this->load->model("calendar_db");
 		$post["todo_status"]=1; // "1" - removed
 		$this->calendar_db->update_event($id_event, $post);
 	}
+	// THIS FUNCTION CALLED BY AJAX
+	// TODO EVENT FEEDS AS JSON FORMAT
+	// MY - SHOW MY FEEDS
+	// SHARE - SHOW SHARED FEEDS
 	public function event_feed($type=FALSE){
 		$this->load->model("calendar_db");
 		if ($type=="my"){
@@ -263,13 +268,15 @@ class Staff extends CI_Controller {
 			$eventsArray['color'] = $row->short_cut_bgcolor;
 			$eventsArray['textColor'] = $row->short_cut_txcolor;
 			$classArr[]="todo_more_info";
+			// ADDING CLASS FOR COMPLEED TODO EVENT
 			if ($row->todo_status==3){
 				$classArr[]="todo_completed";
 			};
+			// ADDING CLASS FOR SHARED TODO EVENT
 			if ($row->todo_if_subhouseman){
 				$classArr[]="todo_share";
 			}
-				
+			
 			$eventsArray['className'] =$classArr;
 			if ($row->todo_if_all_day){
 				$eventsArray['allDay'] =TRUE;
@@ -286,11 +293,14 @@ class Staff extends CI_Controller {
 		echo json_encode($events);
 		return TRUE;
 	}
+	// THIS FUNCTION CALLED BY AJAX
 	public function todo_more_info($id_event){
 		$this->load->model("calendar_db");
 		$this->data["event_reviw_data"]=$this->calendar_db->get_more_info_event($id_event);
 		$this->load->view("ajax/event_reviw", $this->data);
 	}
+	// THIS FUNCTION CALLED BY AJAX
+	// UPADE TODO EVENT BY DROP IN CALENDAR
 	public function update_event_drop(){
 		$this->load->model("calendar_db");
 		if (isset($_POST["upd_time_end"])){
