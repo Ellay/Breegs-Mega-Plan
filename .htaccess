@@ -1,0 +1,9 @@
+AddDefaultCharset utf-8
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php|images|assets|sheet|robots\.txt)
+RewriteRule ^(.*)$ index.php/$1 [L]
+RewriteRule ^images/(.*)$ /source/js/tinymce/uploads/images/$1 [R,L] 
+
+
