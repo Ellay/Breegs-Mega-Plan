@@ -135,6 +135,12 @@ class Staff extends CI_Controller {
 		$this->load->view("main", $this->data);
 	}
 	
+	public function complete_event($id_event){
+		$this->load->model("calendar_db");
+		$post["todo_status"]=3; // "3" - Complated
+		$this->calendar_db->update_event($id_event, $post);
+	}
+	
 	public function todo_edit($todo_id){
 		$this->load->model("calendar_db");
 		$this->load->model("user_db");

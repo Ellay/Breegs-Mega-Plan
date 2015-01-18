@@ -52,7 +52,7 @@ switch($todo_overview->todo_status){
 	</div>
 	<div class="col-lg-6">
 		<div class="title-action">
-			<a href="#" class="btn "><i class="fa fa-pencil"></i> Удалить</a>
+			<a href="#" class="btn btn-outline btn-danger"><i class="fa fa-trash"></i></a>
 			<a href="#" class="btn btn-white"><i class="fa fa-pencil"></i> Редактировать</a>
 			<?php if($todo_overview->todo_status==0):?>
 				<a href="#" class="btn btn-white toddo_complate" data-rel="<?php echo $todo_overview->Id_todo?>"><i class="fa fa-check "></i> Завершить</a>

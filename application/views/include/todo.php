@@ -186,6 +186,18 @@
 		</div>
 	</div>
 </div>
+<div id="modal-form-r" class="modal fade" aria-hidden="true" style="display: none;" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row event-r">
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="col-lg-4" id="more_info">
 	<div class="ibox float-e-margins">
 		<div class="ibox-content">
@@ -361,13 +373,14 @@
 				if (jsEvent.pageX+width_div>width_screen){
 					jsEvent.pageX=jsEvent.pageX-width_div;
 				}
-				$("#more_info").css({left:jsEvent.pageX, top:jsEvent.pageY});
-				$("#more_info").show();
+				//$("#more_info").css({left:jsEvent.pageX, top:jsEvent.pageY});
+				//$("#more_info").show();
+				$('#modal-form-r').modal("show");
 				$.ajax({
 					type: "POST",
 					url: "/staff/todo_more_info/"+event_id,
 					success: function(req){
-						$('#event_content').html(req);
+						$('.event-r').html(req);
 					}
 				});
 				$(this).css('border-color', 'red');
@@ -405,7 +418,8 @@
 	});
 	function cancel_event(){
 		$("#modal-form").modal('hide');
-		$("#more_info").hide();
+		$("#modal-form-r").modal('hide');
+		//$("#more_info").hide();
 		$("#todo_date_start").val();
 		$("#todo_time_start").val();
 		return false;

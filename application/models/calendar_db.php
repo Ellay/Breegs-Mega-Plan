@@ -71,14 +71,10 @@ class Calendar_db extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
-	function update_event($event_id, $post, $target=FALSE){
-		$this->db->where('Id_todo', $event_id);
-		$this->db->update('todo', $post);
-		return TRUE;
-	}
-	function update_event_event($event_id, $post){
+	function update_event($event_id, $post){
 		$this->db->where('Id_todo_event', $event_id);
 		$this->db->update('todo_event', $post);
+		return TRUE;
 	}
 	function get_more_info_event($id_event){
 		$this->db->select('*');
