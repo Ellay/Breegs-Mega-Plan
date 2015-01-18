@@ -127,8 +127,6 @@ class Staff extends CI_Controller {
 		$this->data["content"]="include/todo";
 		$this->load->view("main", $this->data);
 	}
-	
-	// THIS FUNCTION CALLED BY AJAX
 	// OVERVIEW TODO EVENT BY ID
 	public function todo_overview($todo_id){
 		$this->load->model("calendar_db");

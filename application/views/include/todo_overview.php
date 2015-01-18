@@ -52,6 +52,7 @@ switch($todo_overview->todo_status){
 	</div>
 	<div class="col-lg-6">
 		<div class="title-action">
+			<a href="#" class="btn "><i class="fa fa-pencil"></i> Удалить</a>
 			<a href="#" class="btn btn-white"><i class="fa fa-pencil"></i> Редактировать</a>
 			<?php if($todo_overview->todo_status==0):?>
 				<a href="#" class="btn btn-white toddo_complate" data-rel="<?php echo $todo_overview->Id_todo?>"><i class="fa fa-check "></i> Завершить</a>
@@ -84,12 +85,12 @@ switch($todo_overview->todo_status){
 							<h4>Статус: <?php echo $todo_status?></h4>
 							<h4 class="text-navy">Дело #. TD-<?php echo $todo_overview->Id_todo?></h4>
 							<p>
-								<span><strong>Дата начала:</strong> <?php echo $formatter->format($todo_overview->todo_time_start);?></span><br/>
-								<span><strong>Дата завершения:</strong> <?php echo $formatter->format($todo_overview->todo_time_end);?></span><br/>
+								<span><strong>Дата начала:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_start);?></span><br/>
+								<span><strong>Дата завершения:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_end);?></span><br/>
 							</p>
 						</div>
 					</div>
-					<h2><?php echo $todo_overview->todo_title?></h2>
+					<h2><?php echo $todo_overview->todo_title?> <?php if ($todo_overview->todo_if_repeating)echo '<i class="fa fa-refresh"></i>';?> <?php if ($todo_overview->todo_if_subhouseman)echo '<i class="fa fa-share-alt"></i>';?></h2>
 					<div class="well m-t">
 						<?php echo $todo_overview->todo_body?>
 					</div>

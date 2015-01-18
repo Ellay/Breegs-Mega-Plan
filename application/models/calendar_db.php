@@ -92,10 +92,11 @@ class Calendar_db extends CI_Model {
 	}
 	function get_fulll_info_event($id_event){
 		$this->db->select('*');
-		$this->db->from('todo');
-		$this->db->where('Id_todo', $id_event);
+		$this->db->from('todo_event');
+		$this->db->join('todo', 'todo.Id_todo = todo_event.todo_id');
 		$this->db->join('users', 'users.Id_user = todo.todo_housmen');
 		$this->db->join('short_cuts_calendar', 'short_cuts_calendar.Id_short_cut = todo.todo_short_cut');
+		$this->db->where('Id_todo_event', $id_event);
 		$query = $this->db->get();
 		return $query->row();
 	}

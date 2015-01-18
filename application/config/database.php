@@ -47,7 +47,7 @@
 
 $active_group = 'default';
 $active_record = TRUE;
-$db['default']['hostname'] = "46.249.16.151";
+$db['default']['hostname'] = "localhost";
 $db['default']['username'] = "Anton_breegsplan";
 $db['default']['password'] ="breegsplan";
 $db['default']['database'] = "Anton_breegsplan";
