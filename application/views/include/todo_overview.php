@@ -36,7 +36,7 @@ switch($todo_overview->todo_status){
 }
 ?>
 <div class="row wrapper border-bottom white-bg page-heading">
-	<div class="col-lg-4">
+	<div class="col-lg-6">
 		<h2>Подробности</h2>
 		<ol class="breadcrumb">
 			<li>
@@ -50,23 +50,15 @@ switch($todo_overview->todo_status){
 			</li>
 		</ol>
 	</div>
-	<div class="col-lg-8">
+	<div class="col-lg-6">
 		<div class="title-action">
-			<div class="input-group-btn" style="display: inline-block;width: auto;">
-				<button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Удалить <span class="caret"></span></button>
-				<ul class="dropdown-menu">
-					<li><a href="/staff/del_even/<?php echo $todo_overview->Id_todo_event?>/not_ajax" id="dell_one">Удалить это событие</a></li>
-					<li><a href="/staff/del_even_next/<?php echo $todo_overview->Id_todo_event?>/not_ajax" id="dell_next" data-rel="<?php echo $todo_overview->Id_todo_event?>">Удалить все следующие</a></li>
-					<li class="divider"></li>
-					<li><a href="/staff/del_even/<?php echo $todo_overview->Id_todo_event?>/not_ajax" id="dell_all" data-rel="<?php echo $todo_overview->Id_todo_event?>">Удалить все события серии</a></li>
-				</ul>
-			</div>
-			<a href="/staff/todo_edit/<?php echo $todo_overview->Id_todo_event?>" class="btn btn-white"><i class="fa fa-pencil"></i> Редактировать</a>
+			<a href="#" class="btn btn-outline btn-danger"><i class="fa fa-trash"></i></a>
+			<a href="#" class="btn btn-white"><i class="fa fa-pencil"></i> Редактировать</a>
 			<?php if($todo_overview->todo_status==0):?>
-				<a href="/staff/completed_event/<?php echo $todo_overview->Id_todo_event?>" class="btn btn-white"><i class="fa fa-check "></i> Завершить</a>
+				<a href="#" class="btn btn-white toddo_complate" data-rel="<?php echo $todo_overview->Id_todo?>"><i class="fa fa-check "></i> Завершить</a>
 			<?php endif?>
 			<?php if($todo_overview->todo_status==3):?>
-				<a href="/staff/restart_event/<?php echo $todo_overview->Id_todo_event?>" class="btn btn-white"><i class="fa fa-check "></i> Возобновить</a>
+				<a href="#" class="btn btn-white toddo_restart" data-rel="<?php echo $todo_overview->Id_todo?>"><i class="fa fa-check "></i> Возобновить</a>
 			<?php endif?>
 			<?php if($todo_overview->todo_status==2):?>
 				<a href="#" class="btn btn-white"><i class="fa fa-check "></i> Востоновить</a>
@@ -79,46 +71,54 @@ switch($todo_overview->todo_status){
 	<div class="col-lg-12">
 		<div class="wrapper wrapper-content animated fadeInRight">
 			<div class="ibox-content p-xl">
-				<div class="row">
-					<div class="col-sm-6">
-						<h5>Информация:</h5>
-						<address>
-							<strong><?php echo "Постановщик: ".$todo_overview->user_s_name." ".$todo_overview->user_name?></strong><br>
-							<abbr title="Phone number">Моб:</abbr> <?php echo $todo_overview->user_phone?><br>
-							<abbr title="E-Mail">E-Mail:</abbr> <?php echo $todo_overview->user_mail?><br>
-							<?php echo $todo_overview->todo_time_created?>
-						</address>
+					<div class="row">
+						<div class="col-sm-6">
+							<h5>Информация:</h5>
+							<address>
+								<strong><?php echo "Постановщик: ".$todo_overview->user_s_name." ".$todo_overview->user_name?></strong><br>
+								<abbr title="Phone number">Моб:</abbr> <?php echo $todo_overview->user_phone?><br>
+								<abbr title="E-Mail">E-Mail:</abbr> <?php echo $todo_overview->user_mail?><br>
+								<?php echo $todo_overview->todo_time_created?>
+							</address>
+						</div>
+						<div class="col-sm-6 text-right">
+							<h4>Статус: <?php echo $todo_status?></h4>
+							<h4 class="text-navy">Дело #. TD-<?php echo $todo_overview->Id_todo?></h4>
+							<p>
+								<span><strong>Дата начала:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_start);?></span><br/>
+								<span><strong>Дата завершения:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_end);?></span><br/>
+							</p>
+						</div>
 					</div>
-					<div class="col-sm-6 text-right">
-						<h4>Статус: <?php echo $todo_status?></h4>
-						<h4 class="text-navy">Дело #. TD-<?php echo $todo_overview->Id_todo_event?></h4>
-						<p>
-						<span><strong>Дата начала:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_start);?></span><br/>
-						<span><strong>Дата завершения:</strong> <?php echo $formatter->format($todo_overview->todo_event_time_end);?></span><br/>
-						| 
-						<?php
-						foreach($staff_list as $row){
-							if (in_array($row->Id_user, $subcon_list)){
-								echo $row->user_s_name." ".$row->user_name." |";
-							};
-						};
-						?>
-						</p>
+					<h2><?php echo $todo_overview->todo_title?> <?php if ($todo_overview->todo_if_repeating)echo '<i class="fa fa-refresh"></i>';?> <?php if ($todo_overview->todo_if_subhouseman)echo '<i class="fa fa-share-alt"></i>';?></h2>
+					<div class="well m-t">
+						<?php echo $todo_overview->todo_body?>
 					</div>
 				</div>
-				<h2><?php echo $todo_overview->todo_title?> <?php if ($todo_overview->todo_if_repeating)echo '<i class="fa fa-refresh"></i>';?> <?php if ($todo_overview->todo_if_subhouseman)echo '<i class="fa fa-share-alt"></i>';?></h2>
-				<div class="well m-t">
-					<?php echo $todo_overview->todo_body?>
-				</div>
-			</div>
 		</div>
-	</div>
-	<div class="col-lg-12">
-	<div class="wrapper wrapper-content animated fadeInRight">
-		<div class="ibox-content p-xl">
-			<h2>Заметки / Коментарии</h2>
-			<?php echo $todo_overview->todo_coment?>
-		</div>
-	</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(".title-action").on("click", ".toddo_complate", function(){
+		var event_id=$(this).attr("data-rel");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/complate_event/"+event_id,
+			success: function(req){
+				
+			}
+		});
+		return false;
+	})
+	$(".title-action").on("click", ".toddo_restart", function(){
+		var event_id=$(this).attr("data-rel");
+		$.ajax({
+			type: "POST",
+			url: "/ajax/restart_event/"+event_id,
+			success: function(req){
+				
+			}
+		});
+		return false;
+	})
+</script>

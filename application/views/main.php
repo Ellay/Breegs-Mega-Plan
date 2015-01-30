@@ -48,7 +48,59 @@
 	<script src="<?php echo $resources_url?>js/plugins/datapicker/bootstrap-datetimepicker.js"></script>
 	<script src="<?php echo $resources_url?>js/plugins/switchery/switchery.js"></script>
 	<script src="<?php echo $resources_url?>js/plugins/chosen/chosen.jquery.js"></script>
-	<script src="<?php echo $resources_url?>js/plugins/gritter/jquery.gritter.min.js"></script>
+
+	<script src="http://46.249.16.151:3003/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	var SYS = {
+		USER :{
+			id : <?PHP echo $ses_user_id; ?>
+		}
+	}
+	</script>
+	<script src="/source/js/client.js"></script>
+
+	<script type="text/javascript">
+	var socket = new WebSocket("ws://46.249.16.151:3002/<?php echo $ses_user_id?>");
+	
+	
+	
+	
+	
+	
+	
+	/*
+	var socket = new WebSocket("ws://46.249.16.151:3002/<?php echo $ses_user_id?>");
+	function Send_pocket(event){
+		var method="calendar";
+		cansole.log(this);
+		this.push({
+			'method': method,
+			'event': event
+		});
+		//console.log(this);
+		return this;
+	}
+	//var o = {};
+	//this.prototype.sss = Send_pocket;
+	//socket.send(str);
+
+
+
+socket.onmessage = function(event) {
+	console.log(event);
+  var incomingMessage = event.data;
+  showMessage(incomingMessage); 
+};
+
+// показать сообщение в div#subscribe
+function showMessage(message) {
+  var messageElem = document.createElement('div');
+  messageElem.appendChild(document.createTextNode(message.event));
+  document.getElementById('subscribe').appendChild(messageElem);
+}
+*/
+
+</script>
 </head>
 <body>
 	<div id="wrapper">
@@ -86,15 +138,5 @@ $(document).ready(function(){
 });
 
 </script>
-
-	<script src="http://46.249.16.151:3003/socket.io/socket.io.js"></script>
-	<script type="text/javascript">
-	var SYS = {
-		USER :{
-			id : <?PHP echo $ses_user_id; ?>
-		}
-	}
-	</script>
-	<script src="/source/js/client.js"></script>
 </body>
 </html>

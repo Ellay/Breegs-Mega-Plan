@@ -18,9 +18,38 @@
 * All rights reserved.
 */
 ?>
+<div class="row wrapper border-bottom white-bg page-heading">
+	<div class="col-lg-8">
+		<h2>Мои дела</h2>
+		<ol class="breadcrumb">
+			<li>
+				Расписание
+			</li>
+			<li class="active">
+				<strong>Список дел</strong>
+			</li>
+		</ol>
+	</div>
+</div>
 <div class="wrapper wrapper-content">
 	<div class="row animated fadeInDown">
 	<div class="row">
+
+	<div class="col-lg-3">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>Добавить дело</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+
+			</div>
+		</div>
+	</div>
 	<div class="col-lg-9">
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
@@ -39,42 +68,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3">
-		<div class="ibox float-e-margins">
-			<div class="ibox-title">
-				<h5>Добавить дело</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-				</div>
-			</div>
-			<div class="ibox-content">
-
-			</div>
-		</div>
 	</div>
-	</div>
-	</div>
-</div>
-<div id="modal-form-r" class="modal fade" aria-hidden="true" style="display: none;" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" style="padding: 10px 30px 0px 30px;">
-				<div class="row event-r">
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="col-lg-4" id="more_info">
-	<div class="ibox float-e-margins">
-		<div class="ibox-content">
-		<div class="file-manager" id="event_content">
-		
-		</div>
-		</div>
 	</div>
 </div>
 <div id="modal-form" class="modal fade" aria-hidden="true" style="display: none;" data-backdrop="static">
@@ -177,6 +171,7 @@
 										</select>
 										</div>
 									</div>
+
 								</div>
 							</div>
 							<div class="form-group">
@@ -191,19 +186,31 @@
 		</div>
 	</div>
 </div>
-<div id="modal-form_add_new_event" class="modal fade" aria-hidden="true" style="display: none;" data-backdrop="static">
-<div class="modal-dialog">
-<div class="modal-content">
-	<div class="modal-body">
+<div id="modal-form-r" class="modal fade" aria-hidden="true" style="display: none;" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row event-r">
 
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-</div>
-</div>
+
+<div class="col-lg-4" id="more_info">
+	<div class="ibox float-e-margins">
+		<div class="ibox-content">
+		<div class="file-manager" id="event_content">
+		
+		</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 	var calEvent_teleport;
 	$(document).ready(function() {
-
+		$(".sub-hide").click();
 		//// SUMMERNOTE
 		$('#todo_description').summernote({
 			 toolbar: [
@@ -224,7 +231,21 @@
 			cancel_event();
 			return false;
 		})
-		
+		$("#event_content").on("click", ".toddo_complate", function(){
+			var event_id=$(this).attr("data-rel");
+			console.log(calEvent_teleport);
+			$.ajax({
+				type: "POST",
+				url: "/ajax/complate_event/"+event_id,
+				success: function(req){
+					cancel_event();
+					calEvent_teleport.className = "todo_completed";
+					$('#calendar').fullCalendar('updateEvent', calEvent_teleport);
+					calEvent_teleport=null;
+				}
+			});
+			return false;
+		})
 		$("#event_content").on("click", ".del_event", function(){
 			var event_id=$(this).attr("data-rel");
 			$.ajax({
@@ -259,16 +280,12 @@
 
 		$('#calendar').fullCalendar({
 			header: {
-				left: 'prev,next, today',
+				left: 'prev,next',
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay'
 			},
 			editable: true,
-			timezone: 'local',
-			defaultView:'agendaWeek',
-			defaultTimedEventDuration: '00:30:00',
-			titleFormat: 'MMMM DD YYYY',
-			eventFormat:'hh:mm',
+			defaultTimedEventDuration: '00:20:00',
 			selectable: true,
 			selectHelper: true,
 			droppable: true,
@@ -276,7 +293,7 @@
 				var originalEventObject = $(this).data('eventObject');
 				var copiedEventObject = $.extend({}, originalEventObject);
 				copiedEventObject.start = date;
-				//copiedEventObject.end   = (date.getTime() + 1800000)/1000;
+				copiedEventObject.end   = (date.getTime() + 1800000)/1000;
 				copiedEventObject.allDay = allDay;
 				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
 				if ($('#drop-remove').is(':checked')) {
@@ -307,7 +324,6 @@
 					},
 				}
 			],
-			timeFormat: 'H(:mm)',
 			eventDrop: function(event, delta, revertFunc) {
 				var str="";
 				var upd_time_start=event.start.format();
@@ -344,31 +360,25 @@
 				});
 			},
 			select: function(start, end){
-				var new_start_date=start.format();
-				var new_end_date=end.format();
-				var str="";
-				str+="new_event_start="+new_start_date;
-				str+="&new_event_end="+new_end_date;
-				$.ajax({
-					type: "POST",
-					url: "/staff/add_new_event_form/",
-					data: str,
-					success: function(req){
-						$('.event-r').html(req);
-						$("#modal-form-r").modal("show");
-						//$('#calendar').fullCalendar('refetchEvents');
-					}
-				});
-				//add_new_event(new_start_date, new_end_date);
+				var new_start_date= new Date(start.unix()*1000);
+				var new_end_date= new Date(start.unix()*1000+20*60*1000);
+				add_new_event(new_start_date, new_end_date);
 			},
 			eventClick: function(calEvent, jsEvent, view) {
 				var event_id=calEvent.id;
 				calEvent_teleport=calEvent;
+				var width_screen=document.body.clientWidth; // ширина
+				var width_div=$("#more_info").width();
+				//alert('Event: ' + calEvent.title);
+				if (jsEvent.pageX+width_div>width_screen){
+					jsEvent.pageX=jsEvent.pageX-width_div;
+				}
+				//$("#more_info").css({left:jsEvent.pageX, top:jsEvent.pageY});
+				//$("#more_info").show();
 				$('#modal-form-r').modal("show");
 				$.ajax({
 					type: "POST",
-					url: "/staff/todo_more_info/"+event_id+"/show",
-					//url: "/staff/todo_more_info/"+event_id,
+					url: "/staff/todo_more_info/"+event_id,
 					success: function(req){
 						$('.event-r').html(req);
 					}
@@ -376,7 +386,7 @@
 				$(this).css('border-color', 'red');
 			},
 			eventRender:function(event, element){
-				//console.log(element);
+				console.log(element);
 				//element.find('.fc-title').append("1111");
 			}
 		});
@@ -408,12 +418,41 @@
 	});
 	function cancel_event(){
 		$("#modal-form").modal('hide');
-		$(".modal").modal('hide');
 		$("#modal-form-r").modal('hide');
 		//$("#more_info").hide();
 		$("#todo_date_start").val();
 		$("#todo_time_start").val();
 		return false;
 	}
-
+	function add_new_event(start, end){
+		console.log(end);
+		var event_year=start.getFullYear();
+		var event_month=start.getMonth()+1;
+		var event_day=start.getDate();
+		var event_hours=start.getHours()+6;
+		if (event_hours<10){
+			event_hours="0"+event_hours;
+		}
+		var event_minutes=start.getMinutes();
+		if (event_minutes<10){
+			event_minutes="0"+event_minutes;
+		}
+		var event_end_year=end.getFullYear();
+		var event_end_month=end.getMonth()+1;
+		var event_end_day=end.getDate();
+		var event_end_hours=end.getHours()+6;
+		if (event_end_hours<10){
+			event_end_hours="0"+event_end_hours;
+		}
+		var event_end_minutes=end.getMinutes();
+		if (event_end_minutes<10){
+			event_end_minutes="0"+event_end_minutes;
+		}
+		$("#todo_date_start").val(event_year+"-"+event_month+"-"+event_day);
+		$("#todo_time_start").val(event_hours+":"+event_minutes);
+		$("#todo_date_end").val(event_end_year+"-"+event_end_month+"-"+event_end_day);
+		$("#todo_time_end").val(event_end_hours+":"+event_end_minutes);
+		$('#modal-form').modal("show");
+		$('#modal-form').modal({backdrop: 'static'});
+	}
 </script>

@@ -2381,13 +2381,16 @@ table.table-mail tr td {
     font-weight: 600;
     color: inherit;
 }
+
 .read td a, .read td {
     font-weight: normal;
     color: inherit;
 }
+
 .unread td {
-    background-color: #DADADA;;
+    background-color: #f9f8f8;
 }
+
 .ibox-content {
     clear: both;
 }
@@ -3020,37 +3023,4 @@ table.table-mail tr td {
 }
 .todo_completed .fc-title{
 	text-decoration: line-through;
-}
-.fa-times{
-	cursor: pointer;
-}
-#mail td{
-	padding: 3px;
-	font-size: 10px;
-	line-break: strict;
-	
-}
-#mail td:first-child{
-	padding: 0px;
-	font-size: 10px;
-	line-break: strict;
-	vertical-align: middle;
-	text-align: center;
-}
-#mail td:first-child label{
-	padding: 8px;
-	cursor: pointer;
-}
-#mail td a{
-	font-size: 10px;
-}
-.mail_line{
-	cursor: pointer;
-}
-.pointer{
-	cursor: pointer;
-}
-#replay{
-	display: none;
-	background-color: rgb(243, 243, 244);
 }

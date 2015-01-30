@@ -26,7 +26,6 @@ class Ajax extends CI_Controller {
 		return TRUE;
 	}
 	
-	/*dtrhdbghdrt*/
 /**
 	public function update_event(){
 		$this->load->model("calendar_db");

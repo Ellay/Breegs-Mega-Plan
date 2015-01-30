@@ -1,120 +1,39 @@
-var Msql = require('mysql-activerecord');
-var Db = new Msql.Adapter({
+var Ws = new require('ws');
+var webSocketServer = new Ws.Server({port: 3002});
+var Db = require('mysql-activerecord');
+var db = new Db.Adapter({
 	server: 'localhost',
 	username: 'Anton_breegsplan',
 	password: 'breegsplan',
 	database: 'Anton_breegsplan',
 	reconnectTimeout: 2000
 });
-var Act = new Act;
-var User = new User;
 
 var express = require('express')();
-var http = require('http').createServer(Act.handler);
+var http = require('http').createServer(handler);
 var io = require('socket.io')(http);
-http.listen(3003);
-
-io.on('connection', function(socket){
-	socket.on('connect_user', function(data){
-		Act.socket=socket;
-		User.connect(data,socket)
-	});
-	socket.on('open_email', function(data){
-		User.checket_email(data.user_id);
-	});
-	socket.on('disconnect', function(data){
-		User.disconnect(socket)
-	});
-});
-
-  
-function User(){
-	this.socket = [];
-	this.socket_id = [];
-	this.waiting_disconect = [];
-	
-	this.connect = function(data,socket){
-		var user_id = data.user.id;
-		User.socket[user_id+'_'+socket.id] = socket;
-		User.socket_id[socket.id] = user_id;
-		
-		User.checket_email(user_id);
-		User.checket_alerts(user_id);
-		var waiting = User.waiting_disconect[user_id];
-		if(typeof waiting ==='undefined'){
-			Act.emit('all','user_connected',{
-				text:'ID-'+user_id+' в сети',	
-			})
-		}else{
-			User.clear_waiting_disconect(user_id);
-		}
-	}
-	this.checket_email = function(user_id){
-		Db.select(['Id_mail_box']).where({mail_hosman:user_id,mail_status:0}).get("mail_box", function(e,r){
-			Act.emit(user_id,'count_unread_email',{
-				count:(r).length,	
-			},true)
-			
-		});
-	}
-	this.checket_alerts = function(user_id){
-		var line = {};
-		var mail = {};
-		Db.select(['*']).where({user_target:user_id,status:2}).get("alerts", function(e,r){
-			for(var i in r){
-				line = r[i];
-				Act.log("ALERTS",line)
-				if(line.relay==='mail_boxs'){
-					Db.select(['*']).where({mail_hosman:line.user_target}).get("mail_box", function(e,r){
-						mail=r[0];
-						Act.emit(user_id,'message',{
-							title: '<smal>Новое письмо от</smal> '+mail.mail_from_str,
-							text: mail.mail_subject,	
-						},true)
-					});
-				}
-			}
-		});
-	}
-	this.disconnect = function(socket){
-		var user_id = User.socket_id[socket.id];
-		if(user_id===undefined) return false;
-		delete User.socket_id[socket.id]
-		delete User.socket[user_id+'_'+socket.id]
-		
-		var waiting = true;
-		for(var i in User.socket_id){
-			if(User.socket_id[i]==user_id){
-				waiting=false;
-				break;
-			}
-		}
-		if(waiting==false) return false;
-		User.clear_waiting_disconect(user_id);
-		User.waiting_disconect[user_id] = setInterval(function(){
-			Act.emit('all','disconect',{
-				text:'ID-'+user_id+' вышел',	
-			})
-			User.clear_waiting_disconect(user_id);
-		}, 5000);
-	}
-	this.clear_waiting_disconect = function(user_id){
-		clearInterval(User.waiting_disconect[user_id]);
-		delete User.waiting_disconect[user_id];
+function handler(req, res){
+	//console.log(req);
+	console.log(req.headers);
+	res.writeHead(200);
+	if(req.headers.end) res.end(req);
+	if(req.headers.action){
+		Act.headers_action(req.headers.action);
 	}
 }
 
-function Act(){
+http.listen(3003);
+io.on('connection', function ( socket ) {
+	Act.parse_header(socket);
+	Act.socket = socket;
+	socket.on('connect_user', function (data) {
+		Act.log("START SERVER",socket.id)
+	});
+});
+
+
+var Act = new function(){
 	this.socket;
-	
-	this.handler = function(req, res){
-		console.log(req.headers);
-		res.writeHead(200);
-		if(req.headers.end) res.end(req);
-		if(req.headers.action){
-			Act.headers_action(req.headers.action);
-		}
-	}
 	this.get_time = function(){
 		return Math.floor(D.getTime()/1000);
 	}
@@ -123,15 +42,29 @@ function Act(){
 	}
 	//	Запрос метода через заголовок
 	this.headers_action = function(h){
-		var d = JSON.parse(h);
-		var method = d.method;
-		var data = d.value;
-		switch (method) {
-			case "open_email":
+		var data = JSON.parse(h);
+		switch (data.method) {
+			case "order_complete":
+				var d = data.value;
+				var type = (type==='sk')? 'пересчета координат': 'пост обработки';
+				Act.notice(d.user,{
+					from : 'Успех',	
+					text : 'Заказ '+type+' выполнен успешно <a href="/order/'+d.type+'/'+d.order+'">открыть</a>'	
+				})
+				break
+			case "test":
+				console.log(data);
+				break
+			case "notice":
+				console.log(data);
+				break
+			case 5:
+				alert('Перебор')
 				break
 			default:
-				console.log('Я таких значений не знаю')
+				alert('Я таких значений не знаю')
 		}
+
 	}
 	//	Отправка и запись уведомлений
 	this.notice = function(id_user, data){
@@ -141,21 +74,14 @@ function Act(){
 		});
 	}
 	//	Отправка сообщения на все сокеты пользователя по флагу
-	this.emit = function( id_user, flags, data, send_mi ){
-		var socket = online = [];
-		var pattern;
-		for( var i in User.socket){
-			pattern = new RegExp(id_user+'_');
-			if(id_user!="all"){
-				if( i.match(pattern) ){
-					if(typeof User.socket[i]==='object')
-					User.socket[i].emit( flags, data );
-				}
-			}else{
-				if(typeof User.socket[i]==='object')
-				User.socket[i].emit( flags, data );
-			}
-		}
+	this.emit = function( id_user, flags, data ){
+		io.emit( flags+'-'+id_user , data );
+		Act.log( 'Emit '+flags+'-'+id_user,data,'emit' );
+	}
+	//	Отправка сообщения на все сокеты для модеаторов
+	this.emit_admin = function( flags, data ){
+		io.emit( flags+'-admin' , data );
+		Act.log( 'Emit_admin '+flags,data,'emit_admin' );
 	}
 	//	Связка сокетов с пользователями
 	this.push_socket = function( user_id ){
@@ -198,3 +124,72 @@ function Act(){
 }
 
 Act.log("START SERVER",'')
+
+
+
+
+
+var user_id;
+//var db_tools=require('./node/db_module.js');
+//var db= new db_tools();
+//console.log(db);
+var clients=[];
+webSocketServer.on('connection', function(ws) {
+	user_id=ws.upgradeReq.url;
+	//user_id="sdsdsd";
+	user_id=user_id.slice(1);
+	var id = Math.random();
+	clients[user_id+"_"+id] = ws;
+	console.log("новое соединение " + user_id);
+	ws.on('message', function(data) {
+		var data=JSON.parse(data);
+		//console.log(data.method);
+		var marker=data.method
+		
+
+		
+		
+		//console.log(data);
+		
+		
+		
+		for(var key in clients) {
+			//clients[key].send(data);
+		}
+	});
+	ws.on('close', function() {
+		console.log('соединение закрыто ' + id);
+		delete clients[id];
+	});
+
+});
+console.log("Start.....");
+
+/////// PART
+function insert_calendar_event(event){
+	console.log(event);
+	var dateParts = event.todo_date_start.split('-');
+	var timeParts = event.todo_time_start.split(':');
+	var year=parseInt(dateParts[0]);
+	var month=parseInt(dateParts[1]);
+	var day=parseInt(dateParts[2]);
+	var hour=parseInt(timeParts[0]);
+	var minutes=parseInt(timeParts[1]);
+	var date=new Date(year, month-1, day, hour, minutes);
+	var timestamp_start=date.getTime()/1000;
+	//console.log(timestamp_start);
+	var data = {
+		todo_housmen: user_id,
+		todo_time_start: timestamp_start,
+		todo_time_real: timestamp_start,
+		todo_tite: event.todo_title,
+		todo_body: event.todo_description,
+		todo_short_cut: event.todo_short_cut
+		
+	};
+	console.log(data);
+	db.insert('todo', data, function(err, info) {
+		console.log('New row ID is ' + info.insertId);
+	});
+
+}
