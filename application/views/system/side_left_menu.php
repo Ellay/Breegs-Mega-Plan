@@ -41,9 +41,9 @@
 				</div>
 			</li>
 			<li class="">
-				<a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Главная панель</span> <span class="fa arrow"></span></a>
+				<a href="/staff"><i class="fa fa-th-large"></i> <span class="nav-label">Главная панель</span> <span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-					<li class=""><a href="dashboard_2.html">Обзор</a></li>
+					<li class=""><a href="/staff">Обзор</a></li>
 				</ul>
 			</li>
 			<li>
@@ -63,90 +63,24 @@
 			<li>
 				<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Планировщик</span><span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-					<li><a href="/staff/tasks">Мои задачи</a></li>
 					<li><a href="/staff/todo">Мои дела</a></li>
 				</ul>
 			</li>
 			<li>
-				<a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning pull-right">16/24</span></a>
+				<a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning pull-right count_unread_email">16/24</span></a>
 				<ul class="nav nav-second-level">
-					<li><a href="mailbox.html">Inbox</a></li>
-					<li><a href="mail_detail.html">Email view</a></li>
-					<li><a href="mail_compose.html">Compose email</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="widgets.html"><i class="fa fa-flask"></i> <span class="nav-label">Widgets</span> <span class="label label-info pull-right">NEW</span></a>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Forms</span><span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="form_basic.html">Basic form</a></li>
-					<li><a href="form_advanced.html">Advanced Plugins</a></li>
-					<li><a href="form_wizard.html">Wizard</a></li>
-					<li><a href="form_file_upload.html">File Upload</a></li>
-					<li><a href="form_editors.html">Text Editor</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">App Views</span>  <span class="pull-right label label-primary">SPECIAL</span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="contacts.html">Contacts</a></li>
-					<li><a href="profile.html">Profile</a></li>
-					<li><a href="file_manager.html">File manager</a></li>
-					<li><a href="calendar.html">Calendar</a></li>
-					<li><a href="timeline.html">Timeline</a></li>
-					<li><a href="pin_board.html">Pin board</a></li>
-					<li><a href="invoice.html">Invoice</a></li>
-					<li><a href="login.html">Login</a></li>
-					<li><a href="register.html">Register</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Other Pages</span><span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="search_results.html">Search results</a></li>
-					<li><a href="lockscreen.html">Lockscreen</a></li>
-					<li><a href="404.html">404 Page</a></li>
-					<li><a href="500.html">500 Page</a></li>
-					<li><a href="empty_page.html">Empty page</a></li>
-				</ul>
-			</li>
-			<li >
-				<a href="#"><i class="fa fa-flask"></i> <span class="nav-label">UI Elements</span><span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="typography.html">Typography</a></li>
-					<li><a href="icons.html">Icons</a></li>
-					<li><a href="draggable_panels.html">Draggable Panels</a></li>
-					<li><a href="buttons.html">Buttons</a></li>
-					<li><a href="tabs_panels.html">Tabs & Panels</a></li>
-					<li><a href="notifications.html">Notifications & Tooltips</a></li>
-					<li><a href="badges_labels.html">Badges, Labels, Progress</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-laptop"></i> <span class="nav-label">Layout</span><span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="grid_options.html">Grid options</a></li>
-					<li><a href="boxed_layout.html">Boxed layout</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="table_basic.html">Static Tables</a></li>
-					<li><a href="table_data_tables.html">Data Tables</a></li>
+					<li><a href="/staff/inbox">Входящие</a></li>
+					<li><a href="/staff/outbox">Исходящие</a></li>
+					<li><a href="/staff/compse">Написать</a></li>
+					<li><a href="/staff/compose">Корзина</a></li>
 				</ul>
 			</li>
 			<li>
 				<a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Настройка системы</span><span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li><a href="/staff/settings_short_cut_calendar">Ярлыки для календаря</a></li>
-					<li><a href="carousel.html">Bootstrap Carusela</a></li>
+					<li><a href="/staff/settings_notify">Настройка оповещения</a></li>
 				</ul>
-			</li>
-			<li>
-				<a href="css_animation.html"><i class="fa fa-magic"></i> <span class="nav-label">CSS Animations </span><span class="label label-info pull-right">62</span></a>
 			</li>
 		</ul>
 

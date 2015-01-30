@@ -1,22 +1,24 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
-
 	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
+	* Copyright (c) 2014 P. Antoha (p.antoha88@gmail.com || r.linker88@gmail.com)
+	* 
+	* @license MIT
+	* @license GNU GENERAL PUBLIC LICENSE
+	* 
+	* @author Park Anton Chun Kvanovich
+	* 
+	* 
+	* 
+	* If you did not receive a copy of the 
+	* PHP license, or have any questions about PHP licensing, 
+	* please contact license@php.net.
+	* 
+	* 
+	* 
+	* All rights reserved.
+	*/
 	
 	public function __construct(){
 		parent::__construct();

@@ -34,7 +34,12 @@ class Settings_db extends CI_Model {
 		$this->db->insert('short_cuts_calendar', $post);
 		return $this->db->insert_id();
 	}
-	
+	function get_all_notify(){
+		$this->db->select('*');
+		$this->db->from('txt_notify');
+		$query = $this->db->get();
+		return $query->result();
+	}
 	
 }
 ?>
